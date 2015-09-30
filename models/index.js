@@ -6,4 +6,4 @@ mongoose.set('debug', true);
 
 module.exports.User = require("./user");
 module.exports.Song = require("./song");
-modules.exports.Playlist = require("./playlist");
+module.exports.Playlist = require("./playlist");

@@ -1,10 +1,11 @@
-var bcrypt = require('becrypt');
+var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 var mongoose = require('mongoose');
 var Playlist = require('./playlist');
 
 var userSchema = new mongoose.Schema({
     userName: String,
+    avatar: String,
     email: {
         type: String,
         // field is now case insensitive
@@ -63,15 +64,24 @@ userSchema.pre('save', function(next) {
 
 userSchema.statics.authenticate = function(formData, callback) {
     // this refers to the model
-    this.findOne({
-            email: formData.email
+
+    this.find({
+            $or: [{
+                    email: formData.email
+                }, {
+                    userName: formData.email
+                }
+            ]
         },
-        function(err, user) {
-            if (user === null) {
-                callback("Invalid username or password", null);
-            } else {
-                user.checkPassword(formData.password, callback);
-            }
+        function(err, users) {
+            users.forEach(function(user) {
+                if (user === null) {
+                    callback('Invalid username or password', null);
+                } else {
+                    user.checkPassword(formData.password, callback);
+                }
+            });
+
         });
 };
 

@@ -31,9 +31,51 @@ app.use(session({
 // use loginMiddleware everywhere!
 app.use(loginMiddleware);
 
+// Root
+app.get('/', routeMiddleware.ensureLoggedIn, function(req, res) {
+    res.render('users/index');
+});
+
+// Signup/Login
+
+app.get('/signup', routeMiddleware.preventLoginSignup, function(req, res) {
+    res.render('users/signup');
+});
+
+app.post("/signup", function(req, res) {
+    var newUser = req.body.user;
+    console.log(newUser);
+    db.User.create(newUser, function(err, user) {
+        console.log(err);
+        console.log("user is", user);
+        if (user) {
+            console.log(user);
+            req.login(user);
+            res.redirect("/posts");
+        } else {
+            res.render("users/signup");
+        }
+    });
+});
+
+app.get("/login", routeMiddleware.preventLoginSignup, function(req, res) {
+    res.render("users/login");
+});
+
+app.post("/login", function(req, res) {
+    db.User.authenticate(req.body.user,
+        function(err, user) {
+            if (!err && user !== null) {
+                req.login(user);
+                res.redirect("/posts");
+            } else {
+                res.render("users/login");
+            }
+        });
+});
 
 
 // start server
-app.listen(6000, function() {
-    console.log('server running on port 6000');
+app.listen(9000, function() {
+    console.log('power level over 9000');
 });
