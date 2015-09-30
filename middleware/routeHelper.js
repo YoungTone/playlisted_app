@@ -11,8 +11,8 @@ var routeHelpers = {
   },
  // authorization 
   ensureCorrectUser: function(req, res, next) {
-    db.Song.findById(req.params.id, function(err,song){
-      if (song.ownerId !== req.session.id) {
+    db.Playlist.findById(req.params.id, function(err,playlist){
+      if (playlist.user.toString() !== req.session.id) {
         res.redirect('/playlists');
       }
       else {

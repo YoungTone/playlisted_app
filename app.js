@@ -66,6 +66,7 @@ app.post("/login", function(req, res) {
     db.User.authenticate(req.body.user,
         function(err, user) {
             if (!err && user !== null) {
+              console.log('LOGIN USER id', user.id);
                 req.login(user);
                 res.redirect("/playlists");
             } else {
@@ -90,15 +91,31 @@ app.get('/playlists/new', function(req, res) {
 // CREATE new playlist
 app.post('/playlists', routeMiddleware.ensureLoggedIn, function(req, res) {
     var playlist = new db.Playlist(req.body.playlist);
-    playlist.ownerId = req.session.id;
+    playlist.user = req.session.id;
     playlist.save(function(err, playlist) {
         res.redirect("/playlists");
     });
 });
 
-// deleting a playlist
+// displaying form to edit
+app.get('/playlists/:id/edit', function(req, res) {
+    db.Playlist.findById(req.params.id, function(err, playlist) {
+        err ? res.send(err) : res.render('playlists/edit', {
+            playlist: playlist
+        });
+    });
 
-app.delete('/playlists/:id', routeMiddleware.ensureLoggedIn, function(req, res) {
+});
+
+// update a specific playlist with data from edit
+app.put('/playlists/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req, res) {
+    db.Playlist.findByIdAndUpdate(req.params.id, req.body.playlist, function(err, playlist) {
+        err ? res.send(err) : res.redirect('/playlists');
+    });
+});
+
+// deleting a playlist
+app.delete('/playlists/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req, res) {
     db.Playlist.findByIdAndRemove(req.params.id, function(err, playlist) {
         res.redirect('/playlists');
     });
