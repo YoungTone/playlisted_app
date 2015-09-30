@@ -1,0 +1,30 @@
+{
+  "name": "playlisted_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YoungTone/playlisted_app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YoungTone/playlisted_app/issues"
+  },
+  "homepage": "https://github.com/YoungTone/playlisted_app#readme",
+  "dependencies": {
+    "bcrypt": "^0.8.5",
+    "body-parser": "^1.14.1",
+    "cookie-session": "^1.2.0",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "method-override": "^2.3.5",
+    "mongoose": "^4.1.9",
+    "morgan": "^1.6.1",
+    "request": "^2.64.0"
+  }
+}
