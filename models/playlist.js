@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Song = require('./song');
 
 var playlistSchema = new mongoose.Schema({
     location: String,
