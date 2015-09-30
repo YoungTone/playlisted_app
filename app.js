@@ -51,7 +51,7 @@ app.post("/signup", function(req, res) {
         if (user) {
             console.log(user);
             req.login(user);
-            res.redirect("/posts");
+            res.redirect("/playlists");
         } else {
             res.render("users/signup");
         }
@@ -67,13 +67,28 @@ app.post("/login", function(req, res) {
         function(err, user) {
             if (!err && user !== null) {
                 req.login(user);
-                res.redirect("/posts");
+                res.redirect("/playlists");
             } else {
                 res.render("users/login");
             }
         });
 });
 
+app.get('/playlists', routeMiddleware.ensureLoggedIn, function(req, res) {
+    db.Playlist.find({}, function(err, playlist) {
+        res.render('playlists/index', {
+            playlist: playlist
+        });
+    });
+});
+
+
+
+// logout
+app.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/login");
+});
 
 // start server
 app.listen(9000, function() {

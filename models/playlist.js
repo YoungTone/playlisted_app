@@ -2,15 +2,15 @@ var mongoose = require('mongoose');
 var Song = require('./song');
 
 var playlistSchema = new mongoose.Schema({
+    art: String,
+    title: String,
+    genre: String,
     location: String,
-
     // Child Association
     songs: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Song"
-
     }],
-
     // Parent Association
     user: {
         type: mongoose.Schema.Types.ObjectId,

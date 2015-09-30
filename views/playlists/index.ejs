@@ -1,0 +1,35 @@
+<% include ../partials/header %>
+<nav class="navbar navbar-default navbar-fixed-top navbar transparent">
+      <a class="navbar-brand" href="/playlists">Playlisted</a>
+
+<form class="navbar-form navbar-right" role="search" action="/searchresults">
+        <div class="form-group">
+          <a href="/playlists/new" class="btn btn-default">New Playlist</a>
+          <a href="/logout" class="btn btn-default">Log Out</a>
+      </form> 
+</nav>
+<center><h1>Playlists</h1></center>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <td class="heading">     </td>
+    <td class="heading">Title</td>
+    <td class="heading">Genre</td>
+    <td class="heading">Location</td>
+    <td class="heading">Edit </td>
+    <td class="heading">Delete</td>
+  </tr>
+  </thead>
+  <% playlist.forEach(function(playlist){ %>
+<tr>
+  <td><a href="/playlists/<%= song.id%>"><%= playlist.title %></a></td>
+  <td><img src="<%= song.art %>" width="100px"></td>
+  <td><%= playlist.title %></td>
+  <td><%= playlist.genre %></td>
+  <td><%= playlist.location %></td>
+  <td><a href="/playlists/<%= song.id%>/edit"><button class="btn btn-default" >Edit</button></a></td>
+  <td><form action="/playlists/<%= song.id%>?_method=delete" method="POST"><button class="btn btn-default">Delete</button></form></td>
+</tr>
+  <%}); %>
+</table>
+<% include ../partials/footer %>

@@ -13,7 +13,7 @@ var routeHelpers = {
   ensureCorrectUser: function(req, res, next) {
     db.Song.findById(req.params.id, function(err,song){
       if (song.ownerId !== req.session.id) {
-        res.redirect('/songs');
+        res.redirect('/playlists');
       }
       else {
        return next();
@@ -23,7 +23,7 @@ var routeHelpers = {
 // if you are already logged in or signed up prevent it
   preventLoginSignup: function(req, res, next) {
     if (req.session.id !== null && req.session.id !== undefined) {
-      res.redirect('/songs');
+      res.redirect('/playlists');
     }
     else {
      return next();
