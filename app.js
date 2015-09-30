@@ -88,6 +88,15 @@ app.get('/playlists/new', function(req, res) {
     res.render('playlists/new');
 });
 
+// look up song by id and display it
+app.get('/playlists/:id/', routeMiddleware.ensureLoggedIn, function(req, res) {
+    db.Playlist.findById(req.params.id, function(err, playlist) {
+        res.render("playlists/show", {
+            playlist: playlist
+        });
+    });
+});
+
 // CREATE new playlist
 app.post('/playlists', routeMiddleware.ensureLoggedIn, function(req, res) {
     var playlist = new db.Playlist(req.body.playlist);

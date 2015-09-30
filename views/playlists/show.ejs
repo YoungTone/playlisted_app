@@ -1,0 +1,35 @@
+<% include ../partials/header %>
+<nav class="navbar navbar-default navbar-fixed-top navbar transparent">
+      <a class="navbar-brand" href="/playlists">Playlisted</a>
+
+<form class="navbar-form navbar-right" role="search" action="/searchresults">
+        <div class="form-group">
+          <a href="/playlists/new" class="btn btn-default">New Playlist</a>
+          <a href="/logout" class="btn btn-default">Log Out</a>
+      </form> 
+</nav>
+<center><h1>Title</h1></center>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <td class="heading">Art</td>
+    <td class="heading">Title</td>
+    <td class="heading">Genre</td>
+    <td class="heading">Location</td>
+
+  </tr>
+  </thead>
+  <% playlist %>
+<tr>
+  <td><img src="<%= playlist.art %>" width="100px"></td>
+  <td><a href="/playlists/<%= playlist.id%>"><%= playlist.title %></a></td>
+  <td><%= playlist.genre %></td>
+  <td><%= playlist.location %></td>
+  <td><a href="/playlists/<%= playlist.id%>/edit"><button class="btn btn-default" >Edit</button></a></td>
+  <td><form action="/playlists/<%= playlist.id%>?_method=delete" method="POST"><button class="btn btn-default">Delete</button></form></td>
+</tr>
+</table>
+
+
+
+<% include ../partials/footer %>
