@@ -82,6 +82,27 @@ app.get('/playlists', routeMiddleware.ensureLoggedIn, function(req, res) {
     });
 });
 
+// GET request for new playlist
+app.get('/playlists/new', function(req, res) {
+    res.render('playlists/new');
+});
+
+// CREATE new playlist
+app.post('/playlists', routeMiddleware.ensureLoggedIn, function(req, res) {
+    var playlist = new db.Playlist(req.body.playlist);
+    playlist.ownerId = req.session.id;
+    playlist.save(function(err, playlist) {
+        res.redirect("/playlists");
+    });
+});
+
+// deleting a playlist
+
+app.delete('/playlists/:id', routeMiddleware.ensureLoggedIn, function(req, res) {
+    db.Playlist.findByIdAndRemove(req.params.id, function(err, playlist) {
+        res.redirect('/playlists');
+    });
+});
 
 
 // logout

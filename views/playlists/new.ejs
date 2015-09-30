@@ -1,0 +1,25 @@
+<% include ../partials/header %>
+<nav class="navbar navbar-default navbar-fixed-top navbar transparent">
+      <a class="navbar-brand" href="/playlists">Playlisted</a>
+
+<form class="navbar-form navbar-right" role="search" action="/searchresults">
+        <div class="form-group">
+          <a href="/playlists/new" class="btn btn-default">New Playlist</a>
+          <a href="/logout" class="btn btn-default">Log Out</a>
+      </form> 
+</nav>
+  <table class=" table table-striped">
+  <form action="/playlists" method="POST">
+  <tr>
+  <td class="heading">Art:<input type="text" name="playlist[title]" id="art"></td>
+  <td class="heading">Title:<input type"text" name="playlist[artist]" id="title"></td>
+  <td class="heading">Genre:<input type"text" name="playlist[album]" id="genre"></td>
+  <td class="heading">Location:<input type"text" name="playlist[year]" id="location"></td>
+  </tr>
+  </table>
+  <center><td class="heading"><button name="button" class="btn btn-default" >Submit</button></td></center>
+  </form>
+
+
+
+<% include ../partials/footer %>
