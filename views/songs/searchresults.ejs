@@ -1,0 +1,31 @@
+<% include ../partials/header %>
+  <center><h1>Add a song from iTunes</h1></center>
+<nav class="navbar navbar-default navbar-fixed-top navbar transparent">
+      <a class="navbar-brand" href="/songs">Playlisted</a>
+
+<form class="navbar-form navbar-right" role="search" action="/searchresults">
+        <div class="form-group">
+          <a href="/songs/new" class="btn btn-default">Add Song</a>
+          <input type="search" name="query"    placeholder="Search iTunes">
+        </div>
+        <button type="submit" class="btn btn-default">Search</button>
+      </form> 
+</nav>
+  <table class=" table table-striped">
+  <tr>
+  <form action="/songs" method="POST">
+  <td class="heading">Art:<input type"text" name="song[art]" id="art" value="<%= song.artworkUrl100 %>"></td>
+  <td class="heading">Title:<input type="text" name="song[title]" id="title" value="<%= song.trackName %>"></td>
+  <td class="heading">Artist:<input type"text" name="song[artist]" id="artist" value="<%= song.artistName %>"></td>
+  <td class="heading">Album:<input type"text" name="song[album]" id="album" value="<%= song.collectionName %>"></td>
+  <td class="heading">Year:<input type"text" name="song[year]" id="year" value="<%= song.releaseDate %>"></td>
+  <td class="heading">Genre:<input type"text" name="song[genre]" id="genre" value="<%= song.primaryGenreName %>"></td>
+  </tr>
+  </table>
+    <center><td class="heading"><button name="button" class="btn btn-default">Submit</button></td></center>
+  </form>
+
+
+
+<% include ../partials/footer %>
+ 

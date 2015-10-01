@@ -7,7 +7,6 @@ var songSchema = new mongoose.Schema({
     year: String,
     genre: String,
     art: String,
-
     // Parent Association
     playlist: {
         type: mongoose.Schema.Types.ObjectId,

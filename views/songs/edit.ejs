@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+<nav class="navbar navbar-default navbar-fixed-top navbar transparent">
+      <a class="navbar-brand" href="/playlists">Playlisted</a>
+
+<form class="navbar-form navbar-right" role="search" action="/searchresults">
+        <div class="form-group">
+          <a href="/playlists/new" class="btn btn-default">New Playlist</a>
+          <a href="/logout" class="btn btn-default">Log Out</a>
+      </form> 
+</nav>
+
+ <center><h1>Edit</h1></center>
+  <table class=" table table-striped">
+  <tr>
+  <td class="heading">Art:<input type"text" name="song[art]" id="art" value="<%= song.art %>"></td>
+  </tr>
+  <form action="/playlists/<%=id%>/songs/<%=song.id%>?_method=put" method="POST">
+  <td class="heading">Title:<input type="text" name="song[title]" id="title" value="<%= song.title %>"></td>
+  <td class="heading">Artist:<input type"text" name="song[artist]" id="artist" value="<%= song.artist %>"></td>
+  <td class="heading">Album:<input type"text" name="song[album]" id="album" value="<%= song.album %>"></td>
+  <td class="heading">Year:<input type"text" name="song[year]" id="year" value="<%= song.year %>"></td>
+  <td class="heading">Genre:<input type"text" name="song[genre]" id="genre" value="<%= song.genre %>"></td>
+  </table>
+  <center><td class="heading"><button name="button" class="btn btn-default">Submit</button></td></center>
+  </form>
+
+
+
+<% include ../partials/footer %>

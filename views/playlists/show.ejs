@@ -8,7 +8,7 @@
           <a href="/logout" class="btn btn-default">Log Out</a>
       </form> 
 </nav>
-<center><h1>Title</h1></center>
+<center><h1>Playlist</h1></center>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -16,18 +16,44 @@
     <td class="heading">Title</td>
     <td class="heading">Genre</td>
     <td class="heading">Location</td>
-
   </tr>
   </thead>
-  <% playlist %>
 <tr>
-  <td><img src="<%= playlist.art %>" width="100px"></td>
+  <td><img src="<%= playlist.art %>" width="100px" height="100px"></td>
   <td><a href="/playlists/<%= playlist.id%>"><%= playlist.title %></a></td>
   <td><%= playlist.genre %></td>
   <td><%= playlist.location %></td>
+  <td><a href="/playlists/<%= playlist.id%>/songs/new"><button class="btn btn-default" >Add a Song</button></a></td>
   <td><a href="/playlists/<%= playlist.id%>/edit"><button class="btn btn-default" >Edit</button></a></td>
   <td><form action="/playlists/<%= playlist.id%>?_method=delete" method="POST"><button class="btn btn-default">Delete</button></form></td>
 </tr>
+</table>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <td class="heading">Title:</td>
+    <td class="heading">Artist:</td>
+    <td class="heading">Album:</td>
+    <td class="heading">Year:</td>
+    <td class="heading">Genre:</td>
+    <td class="heading">Art:</td>
+    <td class="heading">Edit:</td>
+    <td class="heading">Delete:</td>
+  </tr>
+  </thead>
+  <% playlist.songs.forEach(function(song){ %>
+<tr>
+  <td><img src="<%= song.art %>" width="100px"></td>
+  <td><a href="/songs/<%= song.id%>"><%= song.title %></a></td>
+  <td><%= song.artist %></td>
+  <td><%= song.album %></td>
+  <td><%= song.year %></td>
+  <td><%= song.genre %></td>
+  <td><a href="/playlists/<%= playlist.id%>/songs/<%= song.id%>/edit"><button class="btn btn-default" >Edit</button></a></td>
+  <td><form action="/playlists/<%= playlist.id%>/songs/<%= song.id%>?_method=delete" method="POST"><button class="btn btn-default" type="submit">Delete</button></form></td>
+</tr>
+  <%}); %>
 </table>
 
 

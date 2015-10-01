@@ -21,10 +21,11 @@
   </thead>
   <% playlist.forEach(function(playlist){ %>
 <tr>
-  <td><img src="<%= playlist.art %>" width="100px"></td>
+  <td><img src="<%= playlist.art %>" width="100px" height="100px"></td>
   <td><a href="/playlists/<%= playlist.id%>"><%= playlist.title %></a></td>
   <td><%= playlist.genre %></td>
   <td><%= playlist.location %></td>
+  <td><a href="/playlists/<%= playlist.id%>/songs/new"><button class="btn btn-default" >Add a Song</button></a></td>
   <td><a href="/playlists/<%= playlist.id%>/edit"><button class="btn btn-default" >Edit</button></a></td>
   <td><form action="/playlists/<%= playlist.id%>?_method=delete" method="POST"><button class="btn btn-default">Delete</button></form></td>
 </tr>

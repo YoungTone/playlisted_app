@@ -66,7 +66,7 @@ app.post("/login", function(req, res) {
     db.User.authenticate(req.body.user,
         function(err, user) {
             if (!err && user !== null) {
-              console.log('LOGIN USER id', user.id);
+                console.log('LOGIN USER id', user.id);
                 req.login(user);
                 res.redirect("/playlists");
             } else {
@@ -74,6 +74,8 @@ app.post("/login", function(req, res) {
             }
         });
 });
+
+// PLAYLIST ROUTES
 
 app.get('/playlists', routeMiddleware.ensureLoggedIn, function(req, res) {
     db.Playlist.find({}, function(err, playlist) {
@@ -84,13 +86,13 @@ app.get('/playlists', routeMiddleware.ensureLoggedIn, function(req, res) {
 });
 
 // GET request for new playlist
-app.get('/playlists/new', function(req, res) {
+app.get('/playlists/new', routeMiddleware.ensureLoggedIn, function(req, res) {
     res.render('playlists/new');
 });
 
 // look up song by id and display it
 app.get('/playlists/:id/', routeMiddleware.ensureLoggedIn, function(req, res) {
-    db.Playlist.findById(req.params.id, function(err, playlist) {
+    db.Playlist.findById(req.params.id).populate("songs").exec(function(err, playlist) {
         res.render("playlists/show", {
             playlist: playlist
         });
@@ -107,7 +109,7 @@ app.post('/playlists', routeMiddleware.ensureLoggedIn, function(req, res) {
 });
 
 // displaying form to edit
-app.get('/playlists/:id/edit', function(req, res) {
+app.get('/playlists/:id/edit', routeMiddleware.ensureLoggedIn, function(req, res) {
     db.Playlist.findById(req.params.id, function(err, playlist) {
         err ? res.send(err) : res.render('playlists/edit', {
             playlist: playlist
@@ -130,6 +132,126 @@ app.delete('/playlists/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ens
     });
 });
 
+// SONG ROUTES 
+
+// Index
+app.get('/playlists/:id/songs', routeMiddleware.ensureLoggedIn, function(req, res) {
+    db.Playlist.findById(req.params.playlist_id).populate('songs').exec(function(err, playlist) {
+        res.render('songs/index', {
+            playlist: playlist
+        });
+    });
+});
+
+// New
+
+app.get('/playlists/:id/songs/new', routeMiddleware.ensureLoggedIn, function(req, res) {
+    db.Playlist.findById(req.params.id,
+        function(err, playlist) {
+            res.render('songs/new', {
+                playlist: playlist
+            });
+        });
+});
+
+// CREATE
+
+app.post('/playlists/:id/songs', routeMiddleware.ensureLoggedIn, function(req, res) {
+    console.log("POSTING SONG NOW");
+    db.Song.create(req.body.song, function(err, song) {
+        if (err) {
+            console.log(err);
+            res.render('songs/new');
+        } else {
+            console.log("SONG CREATED! SONG:", song);
+            db.Playlist.findById(req.params.id, function(err, playlist) {
+                playlist.songs.push(song);
+                song.playlist = playlist._id;
+                song.save();
+                playlist.save();
+                res.redirect('/playlists/' + req.params.id);
+            });
+        }
+    });
+});
+
+// SHOW
+
+app.get('/playlists/:id/songs/:songs_id', routeMiddleware.ensureLoggedIn, function(req, res) {
+    db.Song.findById(req.params.songs_id)
+        .populate('playlist')
+        .exec(function(err, song) {
+            console.log(song.playlist);
+            res.render('songs/show', {
+                song: song
+            });
+        });
+});
+
+//  DISPLAYING EDIT FORM
+app.get('/playlists/:id/songs/:songs_id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req, res) {
+    db.Song.findById(req.params.songs_id)
+        .populate('playlist')
+        .exec(function(err, song) {
+            res.render('songs/edit', {
+                song: song,
+                id: req.params.id
+            });
+        });
+});
+
+// UPDATE
+
+app.put('/playlists/:id/songs/:songs_id/', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req, res) {
+    db.Song.findByIdAndUpdate(req.params.songs_id, {
+        title: req.body.song.title,
+        artist: req.body.song.artist,
+        album: req.body.song.album,
+        year: req.body.song.year,
+        genre: req.body.song.genre,
+        art: req.body.song.art
+    }, function(err, song) {
+        if (err) {
+            res.render('songs/edit');
+        } else {
+            res.redirect('/playlists/' + req.params.id);
+        }
+    });
+});
+
+// DESTORY
+
+app.delete('/playlists/:id/songs/:songs_id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req, res) {
+    db.Song.findByIdAndRemove(req.params.songs_id,        
+     function(err, song) {
+        if (err) {
+            console.log(err);
+            res.render('songs/edit');
+        } else {
+            res.redirect('/playlists/' + req.params.id);
+        }
+    });
+});
+
+// searching api for a song
+app.get("/searchresults", function(req, res) { // res our servers object that allows us to respond/ express objec that allows us to respond
+    var search = encodeURIComponent(req.query.query);
+    console.log(req.query);
+    request.get('https://itunes.apple.com/search?term=' + search, function(error, response, body) { // response we have recieved from api/ data
+        if (error) {
+            res.status(500).send("You got an error - " + error);
+        } else if (!error && response.statCode >= 300) {
+            res.status(500).send("Something went wrong! Status: " + response.statusCode);
+        }
+        if (!error && response.statusCode === 200) {
+            var body = JSON.parse(body);
+            var song = body.results[0];
+            res.render('songs/searchresults', {
+                song: song
+            });
+        }
+    });
+});
 
 // logout
 app.get("/logout", function(req, res) {
