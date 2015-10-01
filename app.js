@@ -148,6 +148,7 @@ app.get('/playlists/:id/songs', routeMiddleware.ensureLoggedIn, function(req, re
 app.get('/playlists/:id/songs/new', routeMiddleware.ensureLoggedIn, function(req, res) {
     db.Playlist.findById(req.params.id,
         function(err, playlist) {
+            req.session.playlistId = playlist._id;
             res.render('songs/new', {
                 playlist: playlist
             });
@@ -222,15 +223,15 @@ app.put('/playlists/:id/songs/:songs_id/', routeMiddleware.ensureLoggedIn, route
 // DESTORY
 
 app.delete('/playlists/:id/songs/:songs_id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req, res) {
-    db.Song.findByIdAndRemove(req.params.songs_id,        
-     function(err, song) {
-        if (err) {
-            console.log(err);
-            res.render('songs/edit');
-        } else {
-            res.redirect('/playlists/' + req.params.id);
-        }
-    });
+    db.Song.findByIdAndRemove(req.params.songs_id,
+        function(err, song) {
+            if (err) {
+                console.log(err);
+                res.render('songs/edit');
+            } else {
+                res.redirect('/playlists/' + req.params.id);
+            }
+        });
 });
 
 // searching api for a song
@@ -247,7 +248,8 @@ app.get("/searchresults", function(req, res) { // res our servers object that al
             var body = JSON.parse(body);
             var song = body.results[0];
             res.render('songs/searchresults', {
-                song: song
+                song: song,
+                playlistId: req.session.playlistId,
             });
         }
     });
@@ -260,6 +262,7 @@ app.get("/logout", function(req, res) {
 });
 
 // start server
-app.listen(9000, function() {
-    console.log('power level over 9000');
+
+app.listen(process.env.PORT || 3000, function() {
+    console.log('running 3000');
 });
