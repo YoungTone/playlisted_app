@@ -182,9 +182,9 @@ app.get('/playlists/:id/songs/:songs_id', routeMiddleware.ensureLoggedIn, functi
     db.Song.findById(req.params.songs_id)
         .populate('playlist')
         .exec(function(err, song) {
-            console.log(song.playlist);
             res.render('songs/show', {
-                song: song
+                song: song,
+
             });
         });
 });

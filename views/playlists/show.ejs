@@ -8,14 +8,14 @@
           <a href="/logout" class="btn btn-default">Log Out</a>
       </form> 
 </nav>
-<center><h1>Playlist</h1></center>
+<center><h1><%= playlist.title %></h1></center>
 <table class="table table-striped">
   <thead>
   <tr>
-    <td class="heading">Art</td>
-    <td class="heading">Title</td>
-    <td class="heading">Genre</td>
-    <td class="heading">Location</td>
+    <td class="heading"></td>
+    <td class="heading"><strong>Title:</strong></td>
+    <td class="heading"><strong>Genre:</strong></td>
+    <td class="heading"><strong>Location:</strong></td>
   </tr>
   </thead>
 <tr>
@@ -28,18 +28,17 @@
   <td><form action="/playlists/<%= playlist.id%>?_method=delete" method="POST"><button class="btn btn-default">Delete</button></form></td>
 </tr>
 </table>
+<center><h1>Tracklist</h1></center>
 
 <table class="table table-striped">
   <thead>
   <tr>
-    <td class="heading">Title:</td>
-    <td class="heading">Artist:</td>
-    <td class="heading">Album:</td>
-    <td class="heading">Year:</td>
-    <td class="heading">Genre:</td>
-    <td class="heading">Art:</td>
-    <td class="heading">Edit:</td>
-    <td class="heading">Delete:</td>
+    <td class="heading"></td>
+    <td class="heading"><strong>Title:</strong></td>
+    <td class="heading"><strong>Artist:</strong></td>
+    <td class="heading"><strong>Album:</strong></td>
+    <td class="heading"><strong>Year:</strong></td>
+    <td class="heading"><strong>Genre:</strong></td>
   </tr>
   </thead>
   <% playlist.songs.forEach(function(song){ %>
