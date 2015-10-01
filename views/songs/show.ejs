@@ -4,23 +4,33 @@
 
 <form class="navbar-form navbar-right" role="search" action="/searchresults">
         <div class="form-group">
-          <input type="search" name="query"    placeholder="Search iTunes">
-        </div>
-        <button type="submit" class="btn btn-default">Search</button>
-      </form></nav>
-<table class=" table table-striped">
-  <form action="/songs" method="POST">
+          <a href="/playlists/new" class="btn btn-default">New Playlist</a>
+          <a href="/logout" class="btn btn-default">Log Out</a>
+      </form> 
+</nav>
+
+<center><h1><%= song.title %></h1></center>
+
+<table class="table table-striped">
+  <thead>
   <tr>
-  <td class="heading">Title:<input type="text" name="song[title]" id="title"></td>
-  <td class="heading">Artist:<input type"text" name="song[artist]" id="artist"></td>
-  <td class="heading">Album:<input type"text" name="song[album]" id="album"></td>
-  <td class="heading">Year:<input type"text" name="song[year]" id="year"></td>
-  <td class="heading">Genre:<input type"text" name="song[genre]" id="genre"></td>
-  <td class="heading">Art:<input type"text" name="song[art]" id="art"></td>
+    <td class="heading"></td>
+    <td class="heading"><strong>Title:</strong></td>
+    <td class="heading"><strong>Artist:</strong></td>
+    <td class="heading"><strong>Album:</strong></td>
+    <td class="heading"><strong>Year:</strong></td>
+    <td class="heading"><strong>Genre:</strong></td>
   </tr>
-  </table>
-  <center><td class="heading"><button name="button" class="btn btn-default" >Add Song to Playlist</button></td></center>
-  </form>
+  </thead>
+<tr>
+  <td><img src="<%= song.art %>" width="100px"></td>
+  <td><%= song.title %></td>
+  <td><%= song.artist %></td>
+  <td><%= song.album %></td>
+  <td><%= song.year %></td>
+  <td><%= song.genre %></td>
+</tr>
+</table>
 
 
 

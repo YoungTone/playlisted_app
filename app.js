@@ -184,7 +184,7 @@ app.get('/playlists/:id/songs/:songs_id', routeMiddleware.ensureLoggedIn, functi
         .exec(function(err, song) {
             res.render('songs/show', {
                 song: song,
-
+                
             });
         });
 });
